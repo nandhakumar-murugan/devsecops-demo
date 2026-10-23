@@ -1,0 +1,32 @@
+name: DevSecOps Automated DAST Pipeline - Nandhakumar M (711724UCY129)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  dast_scan:
+    name: Automated DAST Scanning Suite
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      actions: read
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Launch Target Web Application
+        run: |
+          python3 -m http.server 8000 &
+          sleep 3
+
+      - name: Execute OWASP ZAP DAST Scan
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'http://localhost:8000'
+          fail_action: false
