@@ -30,3 +30,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'http://localhost:8000'
           fail_action: false
+          artifact_name: 'zap-scan'
